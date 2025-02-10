@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <application>
+        <service
+            android:name=".ParamService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.market.service.ACTION_TO_DOWNLOAD_PARAMS" />
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </service>
+        <service android:name=".DelayService" />
+    </application>
+</manifest>
