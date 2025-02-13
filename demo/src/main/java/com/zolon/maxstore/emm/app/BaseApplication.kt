@@ -11,13 +11,13 @@ class BaseApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        EMMSDK.instance.init(this, "", "", object : EMMSDK.InitCallback {
+        EMMSDK.getInstance().init(this, "", "", object : EMMSDK.InitCallback {
             override fun onSuccess() {
                 Log.d(TAG, "initSuccess")
             }
 
-            override fun onFailed() {
-                Log.d(TAG, "initFailed")
+            override fun onFailed(t: Throwable?) {
+                Log.e(TAG, "initFailed", t)
             }
         })
     }

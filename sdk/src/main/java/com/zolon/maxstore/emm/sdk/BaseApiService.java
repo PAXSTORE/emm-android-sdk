@@ -40,9 +40,10 @@ public final class BaseApiService {
                     final IApiUrlService apiUrlService = IApiUrlService.Stub.asInterface(service);
                     final String apiUrl = apiUrlService.getApiUrl();
                     final String sn = apiUrlService.getSn();
+                    final long marketId = apiUrlService.getMarketId();
                     Log.d(TAG, "apiUrl: $apiUrl, sn: $sn");
 
-                    callback.onSuccess(apiUrl, sn);
+                    callback.onSuccess(apiUrl, sn, marketId);
                 } catch (RemoteException e) {
                     callback.onFailed(e);
                 }
@@ -65,7 +66,7 @@ public final class BaseApiService {
     }
 
     public interface InitCallback {
-        void onSuccess(String apiUrl, String sn);
+        void onSuccess(String apiUrl, String sn, long marketId);
         void onFailed(Throwable e);
     }
 }
