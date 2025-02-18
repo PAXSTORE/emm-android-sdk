@@ -62,7 +62,7 @@ public class EMMSDK {
                     EMMSDK.this.terminalSn = sn;
                     EMMSDK.this.marketId = marketId;
 
-                    paramVariableApi = new ParamVariableApi(apiUrl, appKey, appSecret, sn);
+                    paramVariableApi = new ParamVariableApi(apiUrl, appKey, appSecret, sn, marketId);
 
                     semaphore.release(1);
                     Log.d(TAG, "initSuccess >> release acquire 1");
