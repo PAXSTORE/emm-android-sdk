@@ -41,7 +41,7 @@ public final class BaseApiService {
                     final String apiUrl = apiUrlService.getApiUrl();
                     final String sn = apiUrlService.getSn();
                     final long marketId = apiUrlService.getMarketId();
-                    Log.d(TAG, "apiUrl: $apiUrl, sn: $sn");
+                    Log.d(TAG, String.format("apiUrl: %s, sn: %s, marketId: %s", apiUrl, sn, marketId));
 
                     callback.onSuccess(apiUrl, sn, marketId);
                 } catch (RemoteException e) {
