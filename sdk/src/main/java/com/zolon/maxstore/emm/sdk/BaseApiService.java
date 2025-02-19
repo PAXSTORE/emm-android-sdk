@@ -14,8 +14,8 @@ import com.zolon.maxstore.emm.aidl.IApiUrlService;
 
 public final class BaseApiService {
     private static final String TAG = "BaseApiService";
-    private static final String EMM_PACKAGE_NAME = "com.zolon.maxstore.emm";
-    private static final String INIT_ACTION = "com.zolon.maxstore.emm.aidl.API_URL_SERVICE";
+    private static final String EMM_PACKAGE_NAME = "com.pax.posviewer";
+    private static final String INIT_ACTION = EMM_PACKAGE_NAME + ".aidl.API_URL_SERVICE";
 
     private static volatile BaseApiService instance;
 
@@ -32,7 +32,7 @@ public final class BaseApiService {
         return instance;
     }
 
-    public void init(Context context, String appKey, String appSecret, InitCallback callback) {
+    public void init(Context context, InitCallback callback) {
         ServiceConnection serviceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {

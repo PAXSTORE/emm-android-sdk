@@ -10,4 +10,12 @@ public class ParamListObject extends SdkObject {
     private boolean changed;
     @SerializedName("vinfos")
     private List<ParamObject> list;
+
+    public boolean isChanged() {
+        return changed;
+    }
+
+    public List<ParamObject> getList() {
+        return list;
+    }
 }

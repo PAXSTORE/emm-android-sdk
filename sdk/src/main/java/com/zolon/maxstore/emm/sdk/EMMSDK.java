@@ -55,14 +55,14 @@ public class EMMSDK {
             } catch (InterruptedException e) {
                 Log.e(TAG, "InterruptedException", e);
             }
-            BaseApiService.getInstance().init(context, appKey, appSecret, new BaseApiService.InitCallback() {
+            BaseApiService.getInstance().init(context, new BaseApiService.InitCallback() {
                 @Override
                 public void onSuccess(String apiUrl, String sn, long marketId) {
                     EMMSDK.this.url = apiUrl;
                     EMMSDK.this.terminalSn = sn;
                     EMMSDK.this.marketId = marketId;
 
-                    paramVariableApi = new ParamVariableApi(apiUrl, appKey, appSecret, sn, marketId);
+                    paramVariableApi = new ParamVariableApi(context, apiUrl, appKey, appSecret, sn, marketId);
 
                     semaphore.release(1);
                     Log.d(TAG, "initSuccess >> release acquire 1");
