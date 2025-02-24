@@ -1,10 +1,9 @@
 package com.zolon.maxstore.emm.sdk.api;
 
 import com.google.gson.annotations.SerializedName;
+import com.zolon.maxstore.emm.sdk.java.base.dto.SdkObject;
 
-public class IdentifierObject {
-    @SerializedName("businessCode")
-    private int businessCode;
+public class IdentifierObject extends SdkObject {
     @SerializedName("serialNo")
     private String serialNo;
     @SerializedName("imei")
