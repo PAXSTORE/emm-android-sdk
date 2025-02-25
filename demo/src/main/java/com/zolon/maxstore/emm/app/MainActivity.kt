@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.Toast
+import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.zolon.maxstore.emm.sdk.EMMSDK
 import com.zolon.maxstore.emm.sdk.java.base.util.JsonUtils
@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val txv = findViewById<TextView>(R.id.txv)
+
         findViewById<Button>(R.id.btn1).setOnClickListener {
             lifecycleScope.launch {
                 val paramVariables = withContext(Dispatchers.IO) {
@@ -28,7 +30,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 val paramVariableStr = JsonUtils.toJson(paramVariables)
                 Log.d(TAG, "paramVariableStr: $paramVariableStr")
-                Toast.makeText(this@MainActivity, paramVariableStr, Toast.LENGTH_SHORT).show()
+                txv.text = paramVariableStr
             }
         }
 
@@ -39,7 +41,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 val identifierStr = JsonUtils.toJson(identifier)
                 Log.d(TAG, "identifierStr: $identifierStr")
-                Toast.makeText(this@MainActivity, identifierStr, Toast.LENGTH_SHORT).show()
+                txv.text = identifierStr
             }
         }
     }

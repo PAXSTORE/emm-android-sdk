@@ -14,6 +14,7 @@ import com.zolon.maxstore.emm.aidl.IApiUrlService;
 
 public final class BaseApiService {
     private static final String TAG = "BaseApiService";
+
     private static final String EMM_PACKAGE_NAME = "com.pax.posviewer";
     private static final String INIT_ACTION = EMM_PACKAGE_NAME + ".aidl.API_URL_SERVICE";
 

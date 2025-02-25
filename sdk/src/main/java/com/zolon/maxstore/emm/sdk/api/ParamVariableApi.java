@@ -4,6 +4,7 @@ import static com.zolon.maxstore.emm.sdk.java.base.util.SHA256Utils.byte2hex;
 import static com.zolon.maxstore.emm.sdk.java.base.util.SHA256Utils.encryptHMAC;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.zolon.maxstore.emm.sdk.java.base.api.BaseApi;
 import com.zolon.maxstore.emm.sdk.java.base.request.SdkRequest;
@@ -16,6 +17,8 @@ import java.security.GeneralSecurityException;
 import java.util.List;
 
 public final class ParamVariableApi extends BaseApi {
+    private static final String TAG = "ParamVariableApi";
+
     private static final String DOWNLOAD_PARAM_URL = "/v1/3rdApps/emm/variables";
     private static final String DOWNLOAD_SN_URL = "/v1/3rdApps/emm/identifier";
 
@@ -38,9 +41,14 @@ public final class ParamVariableApi extends BaseApi {
         SdkRequest request = new SdkRequest(DOWNLOAD_PARAM_URL);
         request.addHeader(REQ_PARAM_SN, getTerminalSN());
         request.addHeader(REQ_PARAM_MARKET_ID, Long.toString(marketId));
-        request.addHeader(REQ_PARAM_VARIABLE_SIGN, PreferencesUtils.getString(context, SP_KEY_VARIABLE_SIGN, ""));
+
+        String variableSign = PreferencesUtils.getString(context, SP_KEY_VARIABLE_SIGN, "");
+        Log.d(TAG, "variableSign: " + variableSign);
+        request.addHeader(REQ_PARAM_VARIABLE_SIGN, variableSign);
+
         ParamListObject result = JsonUtils.fromJson(call(request), ParamListObject.class);
         saveVariableSignature(result.getList());
+
         return result;
     }
 
