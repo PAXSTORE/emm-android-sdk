@@ -64,7 +64,9 @@ public final class ParamVariableApi extends BaseApi {
 
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < vinfos.size(); i++) {
-            builder.append(String.format("%s=%s", vinfos.get(i).getKey(), vinfos.get(i).getValue()));
+            String key = vinfos.get(i).getKey();
+            String value = vinfos.get(i).getValue();
+            builder.append(String.format("%s=%s", key != null ? key : "", value != null ? value : ""));
             if (i != vinfos.size() - 1) {
                 builder.append("&");
             }
