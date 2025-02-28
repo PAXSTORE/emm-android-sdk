@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.zolon.maxstore.emm.app'
-    compileSdk 29
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.zolon.maxstore.emm.app"
-        minSdk 26
-        targetSdk 29
+        minSdk 29
+        targetSdk 34
         versionCode 1
         versionName "1.0"
     }
