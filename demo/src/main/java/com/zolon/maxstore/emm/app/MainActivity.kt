@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.zolon.maxstore.emm.sdk.EMMSDK
 import com.zolon.maxstore.emm.sdk.java.base.util.JsonUtils
@@ -25,8 +26,13 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn1).setOnClickListener {
             lifecycleScope.launch {
-                val paramVariables = withContext(Dispatchers.IO) {
-                    EMMSDK.getInstance().paramVariableApi.paramVariables
+                val paramVariables = try {
+                    withContext(Dispatchers.IO) {
+                        EMMSDK.getInstance().paramVariableApi.paramVariables
+                    }
+                } catch (t: Throwable) {
+                    Toast.makeText(this@MainActivity, "初始化异常，请重启应用", Toast.LENGTH_SHORT).show()
+                    return@launch
                 }
                 val paramVariableStr = JsonUtils.toJson(paramVariables)
                 Log.d(TAG, "paramVariableStr: $paramVariableStr")
@@ -36,8 +42,13 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn2).setOnClickListener {
             lifecycleScope.launch {
-                val identifier = withContext(Dispatchers.IO) {
-                    EMMSDK.getInstance().paramVariableApi.identifier
+                val identifier = try {
+                    withContext(Dispatchers.IO) {
+                        EMMSDK.getInstance().paramVariableApi.identifier
+                    }
+                } catch (t: Throwable) {
+                    Toast.makeText(this@MainActivity, "初始化异常，请重启应用", Toast.LENGTH_SHORT).show()
+                    return@launch
                 }
                 val identifierStr = JsonUtils.toJson(identifier)
                 Log.d(TAG, "identifierStr: $identifierStr")
