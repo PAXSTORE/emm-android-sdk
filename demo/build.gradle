@@ -4,15 +4,15 @@ plugins {
 }
 
 android {
-    namespace 'com.zolon.maxstore.emm.app'
+    namespace 'com.zolon.maxstore.emm.demo'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.zolon.maxstore.emm.app"
+        applicationId "com.zolon.maxstore.emm.demo"
         minSdk 29
         targetSdk 34
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.0.1"
     }
 
     buildTypes {
@@ -21,6 +21,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

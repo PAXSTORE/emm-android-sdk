@@ -1,4 +1,4 @@
-package com.zolon.maxstore.emm.app
+package com.zolon.maxstore.emm.demo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

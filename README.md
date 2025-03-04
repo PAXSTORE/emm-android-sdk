@@ -82,10 +82,11 @@ Get parameter variables
         try {
             // this method need to be executed in IO Thread
             ParamListObject paramVariables = EMMSDK.getInstance().getParamVariableApi().getParamVariables();
-            String paramVariableStr = JsonUtils.toJson(paramVariables);
-            runOnUiThread(() -> {
-                txv.setText(paramVariableStr);
-            });
+            if (paramVariables.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
+                Log.d(TAG, "get success. " + JsonUtils.toJson(paramVariables));
+            } else {
+                Log.d(TAG, "get failed. " + paramVariables);
+            }
         } catch (Throwable t) {
             
         }
@@ -97,14 +98,27 @@ Get Serial Number
         try {
             // this method need to be executed in IO Thread
             IdentifierObject identifier = EMMSDK.getInstance().getParamVariableApi().getIdentifier();
-            String identifierStr = JsonUtils.toJson(identifier);
-            runOnUiThread(() -> {
-                txv.setText(identifierStr);
-            });
+            if (identifier.getBusinessCode() == ResultCode.SUCCESS.getCode()) {
+                Log.d(TAG, "get success. " + JsonUtils.toJson(identifier));
+            } else {
+                Log.d(TAG, "get failed. " + identifier);
+            }
         } catch (Throwable t) {
             
         }
     }).start();
+
+ErrorCode
+
+    for all interfaces
+    113: Your request is invalid, please try again or contact marketplace administrator
+    129: Authentication failed
+    1016: App Authentication failed
+    1800: Terminal not found
+    90011: EMM device is uncertified
+
+    only for getIdentifier()
+    131: Insufficient access right
 
 ## License
 
