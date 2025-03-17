@@ -16,8 +16,12 @@ import com.zolon.maxstore.emm.aidl.IApiUrlService;
 public final class BaseApiService {
     private static final String TAG = "BaseApiService";
 
-    private static final String EMM_PACKAGE_NAME = "com.zolon.maxstore.emm";
-    private static final String INIT_ACTION = EMM_PACKAGE_NAME + ".aidl.API_URL_SERVICE";
+    private static final String INIT_ACTION = "com.zolon.maxstore.emm.aidl.API_URL_SERVICE";
+    private static final String[] EMM_PACKAGE_NAMES = {
+            "com.zolon.maxstore.emm",
+            "com.zolon.maxstore.emm.us",
+            "com.pax.posviewer",
+    };
 
     private static volatile BaseApiService instance;
 
@@ -64,9 +68,15 @@ public final class BaseApiService {
             }
         };
 
-        Intent intent = new Intent(INIT_ACTION);
-        intent.setPackage(EMM_PACKAGE_NAME);
-        boolean bindResult = context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        boolean bindResult = false;
+        for (String pkgName : EMM_PACKAGE_NAMES) {
+            Intent intent = new Intent(INIT_ACTION);
+            intent.setPackage(pkgName);
+            if (context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)) {
+                bindResult = true;
+                break;
+            }
+        }
         if (!bindResult) {
             callback.onFailed(new RemoteException(ERR_MSG_PAXSTORE_MAY_NOT_INSTALLED));
             context.unbindService(serviceConnection);
