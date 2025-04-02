@@ -2,6 +2,8 @@ plugins {
     id 'com.android.library'
 }
 
+apply from :"../publishAndroidLib.gradle"
+
 android {
     namespace 'com.zolon.maxstore.emm.sdk'
     compileSdk 34
