@@ -20,7 +20,7 @@ public final class BaseApiService {
     private static final String[] EMM_PACKAGE_NAMES = {
             "com.zolon.maxstore.emm",
             "com.zolon.maxstore.emm.us",
-            "com.pax.posviewer",
+            "com.zolon.maxstore.emm.sit",
     };
 
     private static volatile BaseApiService instance;
