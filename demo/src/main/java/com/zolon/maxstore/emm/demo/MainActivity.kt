@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
                         EMMSDK.getInstance().paramVariableApi.paramVariables
                     }
                 } catch (t: Throwable) {
-                    Toast.makeText(this@MainActivity, "初始化异常，请重启应用", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "Initialization exception, please restart the application", Toast.LENGTH_SHORT).show()
                     return@launch
                 }
                 val paramVariableStr = JsonUtils.toJson(paramVariables)
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                         EMMSDK.getInstance().paramVariableApi.identifier
                     }
                 } catch (t: Throwable) {
-                    Toast.makeText(this@MainActivity, "初始化异常，请重启应用", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "Initialization exception, please restart the application", Toast.LENGTH_SHORT).show()
                     return@launch
                 }
                 val identifierStr = JsonUtils.toJson(identifier)

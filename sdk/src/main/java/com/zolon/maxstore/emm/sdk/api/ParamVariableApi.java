@@ -30,6 +30,7 @@ public final class ParamVariableApi extends BaseApi {
     private static final String REQ_PARAM_VARIABLE_SIGN = "variablesignature";
 
     private static final String SP_KEY_VARIABLE_SIGN = "variable_sign";
+    private static final String SP_DEF_VARIABLE_SIGN = "AAE64CDD595CCB00D33C166ADCF4941E";
 
     private final Context context;
     private final long marketId;
@@ -45,12 +46,12 @@ public final class ParamVariableApi extends BaseApi {
         request.addHeader(REQ_PARAM_SN, getTerminalSN());
         request.addHeader(REQ_PARAM_MARKET_ID, Long.toString(marketId));
 
-        String variableSign = PreferencesUtils.getString(context, SP_KEY_VARIABLE_SIGN, "");
+        String variableSign = PreferencesUtils.getString(context, SP_KEY_VARIABLE_SIGN, SP_DEF_VARIABLE_SIGN);
         Log.d(TAG, "variableSign: " + variableSign);
         request.addHeader(REQ_PARAM_VARIABLE_SIGN, variableSign);
 
         ParamListObject result = JsonUtils.fromJson(call(request), ParamListObject.class);
-        saveVariableSignature(result.getList());
+        saveVariableSignature(result.isChanged(), result.getList());
 
         return result;
     }
@@ -62,8 +63,13 @@ public final class ParamVariableApi extends BaseApi {
         return JsonUtils.fromJson(call(request), IdentifierObject.class);
     }
 
-    private void saveVariableSignature(List<ParamObject> vinfos) {
-        if (vinfos == null) return;
+    private void saveVariableSignature(boolean  changed, List<ParamObject> vinfos) {
+        if (vinfos == null) {
+            if (changed) {
+                PreferencesUtils.remove(context, SP_KEY_VARIABLE_SIGN);
+            }
+            return;
+        }
 
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < vinfos.size(); i++) {

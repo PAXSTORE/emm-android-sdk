@@ -1,9 +1,12 @@
 package com.zolon.maxstore.emm.sdk.api.dto;
 
 import com.google.gson.annotations.SerializedName;
-import com.zolon.maxstore.emm.sdk.java.base.dto.SdkObject;
 
-public class ParamObject extends SdkObject {
+import java.io.Serializable;
+
+public class ParamObject implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @SerializedName("k")
     private String key;
     @SerializedName("v")
