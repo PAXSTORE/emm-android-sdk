@@ -7,8 +7,8 @@ import com.zolon.maxstore.emm.sdk.EMMSDK
 class BaseApplication: Application() {
     companion object {
         private const val TAG = "BaseApplication"
-        private const val APP_KEY = "3WR44AC9GALK3HYE5R8Y";
-        private const val APP_SECRET = "0P5C5A182Y9DQ6YDJ62VGYC1C65DMTIFQE78LH6A";
+        private const val APP_KEY = "Your key";
+        private const val APP_SECRET = "Your secret";
     }
 
     override fun onCreate() {

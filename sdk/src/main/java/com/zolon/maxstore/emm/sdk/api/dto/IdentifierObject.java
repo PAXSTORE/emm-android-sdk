@@ -1,4 +1,4 @@
-package com.zolon.maxstore.emm.sdk.api;
+package com.zolon.maxstore.emm.sdk.api.dto;
 
 import com.google.gson.annotations.SerializedName;
 import com.zolon.maxstore.emm.sdk.java.base.dto.SdkObject;
