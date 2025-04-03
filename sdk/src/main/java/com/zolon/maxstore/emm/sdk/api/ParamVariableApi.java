@@ -6,6 +6,9 @@ import static com.zolon.maxstore.emm.sdk.java.base.util.SHA256Utils.encryptHMAC;
 import android.content.Context;
 import android.util.Log;
 
+import com.zolon.maxstore.emm.sdk.api.dto.IdentifierObject;
+import com.zolon.maxstore.emm.sdk.api.dto.ParamListObject;
+import com.zolon.maxstore.emm.sdk.api.dto.ParamObject;
 import com.zolon.maxstore.emm.sdk.java.base.api.BaseApi;
 import com.zolon.maxstore.emm.sdk.java.base.request.SdkRequest;
 import com.zolon.maxstore.emm.sdk.java.base.util.CryptoUtils;
