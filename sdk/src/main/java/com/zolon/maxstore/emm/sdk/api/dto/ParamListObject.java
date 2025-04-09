@@ -18,4 +18,12 @@ public class ParamListObject extends SdkObject {
     public List<ParamObject> getList() {
         return list;
     }
+
+    public void setChanged(boolean changed) {
+        this.changed = changed;
+    }
+
+    public void setList(List<ParamObject> list) {
+        this.list = list;
+    }
 }

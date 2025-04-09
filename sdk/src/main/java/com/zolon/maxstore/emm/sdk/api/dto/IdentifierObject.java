@@ -8,4 +8,20 @@ public class IdentifierObject extends SdkObject {
     private String serialNo;
     @SerializedName("imei")
     private String imei;
+
+    public String getImei() {
+        return imei;
+    }
+
+    public String getSerialNo() {
+        return serialNo;
+    }
+
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
+    }
+
+    public void setImei(String imei) {
+        this.imei = imei;
+    }
 }
