@@ -21,6 +21,7 @@ public final class BaseApiService {
             "com.zolon.maxstore.emm",
             "com.zolon.maxstore.emm.us",
             "com.zolon.maxstore.emm.sit",
+            "com.zolon.maxstore.emm.global",
     };
 
     private static volatile BaseApiService instance;

@@ -10,6 +10,7 @@
         <package android:name="com.zolon.maxstore.emm.sit" />
         <package android:name="com.zolon.maxstore.emm" />
         <package android:name="com.zolon.maxstore.emm.us" />
+        <package android:name="com.zolon.maxstore.emm.global" />
     </queries>
 
     <application>
