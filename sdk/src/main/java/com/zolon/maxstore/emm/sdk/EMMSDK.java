@@ -1,6 +1,7 @@
 package com.zolon.maxstore.emm.sdk;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.util.Log;
 
 import com.zolon.maxstore.emm.sdk.api.ParamVariableApi;
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 public class EMMSDK {
     private static final String TAG = "EMMSDK";
+    private static final String INIT_PERMISSION = "com.zolon.maxstore.emm.SN_HOST";
 
     private static volatile EMMSDK instance;
     private ParamVariableApi paramVariableApi;
@@ -44,6 +46,12 @@ public class EMMSDK {
     }
 
     public void init(final Context context, final String appKey, final String appSecret, InitCallback callback) {
+        int permissionStatus = context.checkSelfPermission(INIT_PERMISSION);
+        if (permissionStatus != PackageManager.PERMISSION_GRANTED) {
+            // 没有权限
+            callback.onFailed(new SecurityException("Init permission not granted"));
+            return;
+        }
         if (paramVariableApi == null && semaphore.availablePermits() != 1) {
             validParams(context, appKey, appSecret);
             this.context = context;
