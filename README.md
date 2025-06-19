@@ -59,7 +59,7 @@ Initializing AppKey,AppSecret and SN
         
         private void initEMMSdk() {
            //todo Init AppKey，AppSecret, make sure the appKey and appSecret is corret.
-            StoreSdk.getInstance().init(getApplicationContext(), appkey, appSecret, new BaseApiService.Callback() {
+            EMMSDK.getInstance().init(getApplicationContext(), appkey, appSecret, new BaseApiService.Callback() {
                 @Override
                 public void initSuccess() {
                    //TODO Do your business here
