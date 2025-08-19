@@ -27,7 +27,7 @@ def PUBLISH_GROUP_ID = 'com.whatspos.sdk' //这里可以不是直接申请时候
 
 def PUBLISH_ARTIFACT_ID = "emm-android-sdk"
 
-def PUBLISH_VERSION = "1.0.1"
+def PUBLISH_VERSION = "1.0.2"
 
 android {
     publishing {
