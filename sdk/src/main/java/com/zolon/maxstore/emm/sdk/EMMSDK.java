@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
+import com.zolon.maxstore.emm.sdk.api.ParamApi;
 import com.zolon.maxstore.emm.sdk.api.ParamVariableApi;
 import com.zolon.maxstore.emm.sdk.java.base.exception.NotInitException;
 
@@ -20,6 +21,7 @@ public class EMMSDK {
 
     private static volatile EMMSDK instance;
     private ParamVariableApi paramVariableApi;
+    private ParamApi paramApi;
 
     private Semaphore semaphore;
 
@@ -71,6 +73,7 @@ public class EMMSDK {
                     EMMSDK.this.marketId = marketId;
 
                     paramVariableApi = new ParamVariableApi(context, apiUrl, appKey, appSecret, sn, marketId);
+                    paramApi = new ParamApi(context, apiUrl, appKey, appSecret, sn, marketId);
 
                     semaphore.release(1);
                     Log.d(TAG, "initSuccess >> release acquire 1");
@@ -87,6 +90,16 @@ public class EMMSDK {
         } else {
             Log.d(TAG, "Initialization is on process or has been done");
         }
+    }
+
+    public ParamApi getParamApi() throws NotInitException {
+        if (paramApi == null) {
+            acquireSemaphore();
+            if (paramApi == null) {
+                throw new NotInitException("Not initialized");
+            }
+        }
+        return paramApi;
     }
 
     public ParamVariableApi getParamVariableApi() throws NotInitException {
