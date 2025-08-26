@@ -31,6 +31,7 @@ public class EMMSDK {
     private String url;
     private String terminalSn;
     private long marketId;
+    private String policyId;
 
     public EMMSDK() {
         semaphore = new Semaphore(2);
@@ -67,13 +68,14 @@ public class EMMSDK {
             }
             BaseApiService.getInstance().init(context, new BaseApiService.InitCallback() {
                 @Override
-                public void onSuccess(String apiUrl, String sn, long marketId) {
+                public void onSuccess(String apiUrl, String sn, long marketId, String policyId) {
                     EMMSDK.this.url = apiUrl;
                     EMMSDK.this.terminalSn = sn;
                     EMMSDK.this.marketId = marketId;
+                    EMMSDK.this.policyId = policyId;
 
                     paramVariableApi = new ParamVariableApi(context, apiUrl, appKey, appSecret, sn, marketId);
-                    paramApi = new ParamApi(context, apiUrl, appKey, appSecret, sn, marketId);
+                    paramApi = new ParamApi(context, apiUrl, appKey, appSecret, sn, marketId, policyId);
 
                     semaphore.release(1);
                     Log.d(TAG, "initSuccess >> release acquire 1");

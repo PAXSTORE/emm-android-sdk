@@ -4,29 +4,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ApiActivity">
 
     <Button
         android:id="@+id/btn1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="获取参数变量" />
+        android:text="Get Param variables" />
 
     <Button
         android:id="@+id/btn2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="获取SN" />
+        android:text="get sn" />
 
     <Button
         android:id="@+id/btn_get_param"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="获取参数" />
+        android:text="download parameters" />
 
-    <TextView
-        android:id="@+id/txv"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/txv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </ScrollView>
+
 
 </LinearLayout>

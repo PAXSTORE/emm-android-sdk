@@ -5,4 +5,5 @@ interface IApiUrlService {
     String getApiUrl();
     String getSn();
     long getMarketId();
+    String getPolicyId();
 }

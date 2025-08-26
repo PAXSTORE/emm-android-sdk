@@ -154,11 +154,13 @@ public class ParamApi extends BaseApi {
     private long lastGetTime = -1;
     private Context context;
     private long marketId;
+    private String policyId;
 
-    public ParamApi(Context context, String baseUrl, String appKey, String appSecret, String terminalSN, long marketId) {
+    public ParamApi(Context context, String baseUrl, String appKey, String appSecret, String terminalSN, long marketId, String policyId) {
         super(baseUrl, appKey, appSecret, terminalSN);
         this.context = context;
         this.marketId = marketId;
+        this.policyId = policyId;
     }
 
     public String calculateSHA256(String filePath) {
@@ -376,17 +378,37 @@ public class ParamApi extends BaseApi {
         return JsonUtils.fromJson(call(request), SdkObject.class);
     }
 
+    public SdkObject downloadParamsWithoutCache(String packageName, String saveFilePath) {
+        return downloadParams(packageName, saveFilePath, false);
+    }
 
     /**
-     * Download param files to specific folder
+     * download params and if this api will check params already downloaded as the server configured,
+     * but if saveFilePath changed, params will be downloaded again.
      *
-     * @param packageName        the packageName
-     * @param saveFilePath       the saveFilePath
-
-     * @return the result
+     * @param packageName
+     * @param saveFilePath
+     * @return
      */
-    public SdkObject downloadParams(String packageName, String saveFilePath, String policyId) {
-        String paramSha256 = PreferencesUtils.getString(context, CommonConstants.SP_PARAM_SHA256);
+    public SdkObject downloadParams(String packageName, String saveFilePath) {
+        return downloadParams(packageName, saveFilePath, true);
+    }
+
+        /**
+         * Download param files to specific folder
+         *
+         * @param packageName        the packageName
+         * @param saveFilePath       the saveFilePath
+         * @return the result
+         */
+    private SdkObject downloadParams(String packageName, String saveFilePath, boolean useCache) {
+
+        String lastSaveFolder = PreferencesUtils.getString(context, CommonConstants.SP_PARAM_FOLDER);
+        String paramSha256 =  Objects.equals(saveFilePath, lastSaveFolder)? PreferencesUtils.getString(context, CommonConstants.SP_PARAM_SHA256) : null;
+        if (!useCache) {
+            paramSha256 = null;
+        }
+
         logger.debug("downloadParamToPath: start");
         SdkObject result = new SdkObject();
         if (saveFilePath == null || "".equals(saveFilePath.trim())) {
@@ -395,6 +417,7 @@ public class ParamApi extends BaseApi {
             return result;
         }
         //get paramList
+        Log.e("ttt", "policyId> " + policyId);
         PolicyParamObject policyParamObject = getParamDownloadTask(packageName, paramSha256, policyId);
         Log.e("ttt", "getSha256> " + policyParamObject.getSha256());
         if (policyParamObject.getBusinessCode() != 0) {
@@ -430,6 +453,7 @@ public class ParamApi extends BaseApi {
         } else {
             Log.e("ttt", "SAVE SHA256");
             PreferencesUtils.putString(context, CommonConstants.SP_PARAM_SHA256, policyParamObject.getSha256());
+            PreferencesUtils.putString(context, CommonConstants.SP_PARAM_FOLDER, saveFilePath);
             // 当下载成功之后， 就把文件解压到上级目录
             FileUtils.moveToFatherFolder(saveFilePath);
             // 这里就是把所有的任务不要立即更新为成功， 而是等待更新
