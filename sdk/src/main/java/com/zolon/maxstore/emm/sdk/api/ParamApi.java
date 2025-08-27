@@ -123,6 +123,7 @@ public class ParamApi extends BaseApi {
     private static final String DOWNLOAD_SUCCESS = "Success";
     private static final String FILE_DOWNLOAD_SUCCESS = "Params downloaded";
     private static final String FILE_NO_UPDATE = "No update";
+    private static final String FILE_NO_PARAMETERS = "No Parameters";
     private static final String SAVEPATH_CANNOT_BE_NULL = "Save path can not be empty";
     private static final String ERROR_NO_PARAMS = "No params to download";
     private static final String ERROR_NO_LAST_SUCCESS_PARAMS = "No last successful parameter download task is found";
@@ -430,6 +431,12 @@ public class ParamApi extends BaseApi {
             SdkObject sdkObject = new SdkObject();
             sdkObject.setBusinessCode(policyParamObject.getBusinessCode());
             sdkObject.setMessage(FILE_NO_UPDATE);
+            return sdkObject;
+        }
+        if (policyParamObject.getSha256() == null ) {
+            SdkObject sdkObject = new SdkObject();
+            sdkObject.setBusinessCode(-10);
+            sdkObject.setMessage(FILE_NO_PARAMETERS);
             return sdkObject;
         }
 
