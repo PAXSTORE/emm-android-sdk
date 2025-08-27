@@ -1,0 +1,93 @@
+stages:
+  - compile
+  - test
+  - package
+  - cleanup
+
+# 变量
+# 注意:整数和字符串一样，对于设置变量名和变量值来说都是合法的。但浮点数是非法的。
+variables:
+  APPLICATION_ID: "com.zolon.maxstore.emm.demo"
+  ACCESS_KEY: "xxx"
+  SECRET: "xxx"
+  VERSION_CODE: 1080
+  version: "9.8.2-SNAPSHOT"
+  APP_NAME: "EMM-SDK-Demo"
+cache:
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
+
+before_script:
+  - echo "============== 任务开始 =============="
+  - chmod +x gradlew
+
+after_script:
+  - echo "============== 任务结束 =============="
+
+# 代码检查
+#lint:
+#  stage: test
+#  script:
+#      - gradle lint
+
+compile_job:
+  stage: compile
+  script:
+    - echo "============== 开始编译任务 =============="
+    - ./gradlew compileDebugSource
+  tags:
+    - gradle
+  allow_failure: true
+
+test_job:
+  stage: test
+  #这个是每次提交或者合并代码都会执行测试和UI测试
+  script:
+    - echo "============== 开始测试任务 =============="
+    - ./gradlew testDebugUnitTest
+  #      进行UI测试需要连接模拟器，如果没有UI测试可用不要
+  #      - gradle connectAndroidTest
+  except:
+    - develop
+    - web
+  tags:
+    - gradle
+  allow_failure: true
+
+package_job:
+  stage: package
+  script:
+    - echo "============== 开始打包任务($ASSEMBLE_BUILD_VARIANT) =============="
+    - sed -i "/.*APPLICATION_ID*/cAPPLICATION_ID=${APPLICATION_ID}" gradle.properties
+    - sed -i "/.*ACCESS_KEY*/cACCESS_KEY=${ACCESS_KEY}" gradle.properties
+    - sed -i "/.*SECRET*/cSECRET=${SECRET}" gradle.properties
+    - sed -i "/.*VERSION_CODE*/cVERSION_CODE=${VERSION_CODE}" gradle.properties
+    - sed -i "/.*VERSION_NAME*/cVERSION_NAME=${VERSION_NAME}" gradle.properties
+    - sed -i "/.*APP_NAME*/cAPP_NAME=${APP_NAME}" gradle.properties
+    - echo "$(<gradle.properties)"
+    - ./gradlew
+  tags:
+    - gradle
+  #需要手动触发
+  #  when: manual
+  #  只会在develop分支上执行
+  only:
+    - schedules    # 每日构建触发
+    - web          # 在GitLab页面上Pipelines标签页下按了Run Pipeline的时候触发
+  #打包地址，会自动上传到gitlab
+  artifacts:
+    paths:
+      - demo/build/outputs/apk/*.apk
+    expire_in: 1 day
+
+cleanup_job:
+  stage: cleanup
+  script:
+    - echo "============== 开始清除任务 =============="
+    - ./gradlew clean
+  tags:
+    - gradle
+  #只在构建失败的时候执行clean
+  when: always
+

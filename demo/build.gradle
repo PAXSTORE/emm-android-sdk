@@ -4,21 +4,56 @@ plugins {
 }
 
 android {
+    buildFeatures {
+        buildConfig = true  // 显式启用 BuildConfig 生成
+    }
     namespace 'com.zolon.maxstore.emm.demo'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.zolon.testparamapp10"
+        applicationId APPLICATION_ID
         minSdk 29
         targetSdk 34
-        versionCode 12
-        versionName "1.1.2"
+        versionCode Integer.parseInt(VERSION_CODE)
+        versionName VERSION_NAME
+
+        compileSdkVersion Integer.parseInt(ANDROID_COMPILE_SDK_VERSION)
+        buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
+
+        manifestPlaceholders = [
+                ACCESS_KEY: "$ACCESS_KEY", // 替换为实际密钥
+                SECRET: "$SECRET"
+        ]
+
     }
 
+    // 1. 定义签名配置
+    signingConfigs {
+        release {
+            // 这些值将从 gradle.properties 中读取
+            storeFile file(project.properties['KEYSTORE_FILE'] ?: "debug.keystore")
+            storePassword project.properties['KEYSTORE_PASSWORD'] ?: ""
+            keyAlias project.properties['KEY_ALIAS'] ?: ""
+            keyPassword project.properties['KEY_PASSWORD'] ?: ""
+        }
+    }
+
+
     buildTypes {
+        debug {
+            buildConfigField "String", "SECRET", "\"$SECRET\""
+            resValue "string", "ACCESS_KEY", "$ACCESS_KEY"
+            resValue "string", "APP_NAME", "$APP_NAME"
+        }
+
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // 2. 应用签名配置
+            signingConfig signingConfigs.release
+            buildConfigField "String", "SECRET", "\"$SECRET\""
+            resValue "string", "ACCESS_KEY", "$ACCESS_KEY"
+            resValue "string", "APP_NAME", "$APP_NAME"
         }
     }
 
@@ -34,6 +69,14 @@ android {
         jvmTarget = '1.8'
     }
 }
+
+//variant.outputs.all {
+//    if (outputFileName.endsWith('.apk') && 'release'.equals(variant.buildType.name)) {
+//        variant.getPackageApplicationProvider().get().outputDirectory = new File(buildDir, "outputs/apk")
+//        outputFileName = "${APP_NAME}-${buildType.name}-v${defaultConfig.versionName}.apk"
+//    }
+//}
+
 
 dependencies {
     implementation project(':sdk')
