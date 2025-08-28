@@ -1,5 +1,7 @@
 package com.zolon.maxstore.emm.sdk.util;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -46,6 +48,9 @@ public class ReplaceUtils {
 
     public static boolean replaceParams(String filePath, String paramVariables) {
         List<ParamsVariableObject> paramList = exchangeValues(paramVariables);
+        for (ParamsVariableObject paramsVariableObject : paramList) {
+            Log.e("obj", "key: " + paramsVariableObject.getKey() + " > value: " + paramsVariableObject.getValue());
+        }
         if (paramList == null || paramList.isEmpty()) {
             return true;
         }
@@ -203,7 +208,11 @@ public class ReplaceUtils {
                     ParamsVariableObject dto = new ParamsVariableObject();
                     dto.setKey((String) entry.getKey());
                     dto.setValue((String) entry.getValue());
-                    list.add(dto);
+
+                    ParamsVariableObject dto2 = new ParamsVariableObject();
+                    dto2.setKey("#{" + entry.getKey() + "}");
+                    dto2.setValue((String) entry.getValue());
+                    list.add(dto2);
                 }
             }
             return list;
