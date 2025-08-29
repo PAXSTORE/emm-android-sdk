@@ -213,6 +213,7 @@ public class ReplaceUtils {
                     dto2.setKey("#{" + entry.getKey() + "}");
                     dto2.setValue((String) entry.getValue());
                     list.add(dto2);
+                    list.add(dto);
                 }
             }
             return list;
