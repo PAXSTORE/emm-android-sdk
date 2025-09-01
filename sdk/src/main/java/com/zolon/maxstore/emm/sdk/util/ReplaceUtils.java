@@ -91,15 +91,9 @@ public class ReplaceUtils {
             String fullFile = FileUtils.readFileToString(file);
             String replaceResult = fullFile;
             if (isJsonValidate(fullFile)) {
-                for (ParamsVariableObject paramsVariableObject : paramList) {
-                    String key = escapeExprSpecialWord(paramsVariableObject.getKey());
-                    String value = escapeJson(paramsVariableObject.getValue());
-                    if (paramsVariableObject.getKey().matches("#\\{([A-Za-z0-9-_.]+)\\}")) {
-                        replaceResult = replaceResult.replaceAll(String.format("(?i)%s", key), value);
-                    }
-                }
-
                 Gson gson = new GsonBuilder().create();
+                replaceResult = simpleReplaceSafe(gson, fullFile, paramList);
+
                 replaceResult = processJsonReplacement(gson, replaceResult, paramList);
 
                 //rewrite file
@@ -364,6 +358,36 @@ public class ReplaceUtils {
             throw new ParseXMLException(e);
         }
         return resultMap;
+    }
+
+    // 一个更简单但功能明确的版本，假设占位符只在顶级字符串值中
+    public static String simpleReplaceSafe(Gson gson, String jsonString, List<ParamsVariableObject> paramList) {
+        JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class).getAsJsonObject();
+
+
+        for (ParamsVariableObject paramsVariableObject : paramList) {
+
+            String placeholder =  paramsVariableObject.getKey() ;
+            if(!paramsVariableObject.getKey().matches("#\\{([A-Za-z0-9-_.]+)\\}")) {
+                logger.warn("skip in #{xxx} key : "+ paramsVariableObject.getKey() + "> value:" + paramsVariableObject.getValue());
+                continue;
+            }
+            String value = paramsVariableObject.getValue();
+
+            logger.warn("key: " + paramsVariableObject.getKey() + "> value:" + paramsVariableObject.getValue());
+            // 遍历JSON对象的所有属性
+            for (Map.Entry<String, JsonElement> jsonEntry : jsonObject.entrySet()) {
+                if (jsonEntry.getValue().isJsonPrimitive() && jsonEntry.getValue().getAsJsonPrimitive().isString()) {
+                    String currentValue = jsonEntry.getValue().getAsString();
+                    if (currentValue.equals(placeholder)) {
+                        // 直接替换整个字符串值
+                        jsonObject.addProperty(jsonEntry.getKey(), value);
+                    }
+                }
+            }
+        }
+
+        return gson.toJson(jsonObject);
     }
 
 }
