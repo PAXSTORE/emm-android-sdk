@@ -460,7 +460,7 @@ public class ParamApi extends BaseApi {
         } else {
             Log.e("ttt", "SAVE SHA256");
             PreferencesUtils.putString(context, CommonConstants.SP_PARAM_SHA256, policyParamObject.getSha256());
-            PreferencesUtils.putString(context, CommonConstants.SP_PARAM_FOLDER, saveFilePath);
+            PreferencesUtils.putString(context, CommonConstants.SP_PARAM_FOLDER, saveFilePath.substring(0, saveFilePath.lastIndexOf("/temp")));
             // 当下载成功之后， 就把文件解压到上级目录
             FileUtils.moveToFatherFolder(saveFilePath);
             // 这里就是把所有的任务不要立即更新为成功， 而是等待更新
