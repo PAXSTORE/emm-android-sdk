@@ -95,7 +95,7 @@ public class ApiActivity extends Activity {
                             SdkObject downloadResult = EMMSDK.getInstance().getParamApi().downloadParams(getPackageName(), saveFilePath);
                             String fileListStr = FolderUitls.listAllNames(saveFilePath);
                             String result = "download path:" +  saveFilePath + " \n\n Download param result: "  +downloadResult  + " \n\n fileList: \n" + fileListStr + " \n\n\n" +
-                                    "  sys_ap.p  ：";
+                                    "  sys_cap.p  ：";
                             if (new File(saveFilePath, "sys_cap.p").exists() && downloadResult.getBusinessCode() == 0) {
                                 String fileResult = FileUtils.readFileToString(new File(saveFilePath, "sys_cap.p"));
                                 result = result + fileResult;
