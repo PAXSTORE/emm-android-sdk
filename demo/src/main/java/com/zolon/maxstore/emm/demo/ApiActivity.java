@@ -91,7 +91,7 @@ public class ApiActivity extends Activity {
                     public void run() {
                         try {
                             String saveFilePath = new File(getApplication().getExternalFilesDir(null), "YourPath").getAbsolutePath();
-                            Log.e("ttt", saveFilePath);
+                            if(BuildConfig.VERSION_NAME.contains("s")) Log.e("ttt", saveFilePath);
                             SdkObject downloadResult = EMMSDK.getInstance().getParamApi().downloadParams(getPackageName(), saveFilePath);
                             String fileListStr = FolderUitls.listAllNames(saveFilePath);
                             String result = "download path:" +  saveFilePath + " \n\n Download param result: "  +downloadResult  + " \n\n fileList: \n" + fileListStr + " \n\n\n" +

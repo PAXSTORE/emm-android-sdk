@@ -47,16 +47,12 @@ public final class BaseApiService {
                     final String apiUrl = apiUrlService.getApiUrl();
                     final String sn = apiUrlService.getSn();
                     final long marketId = apiUrlService.getMarketId();
-                    final String policyId = apiUrlService.getPolicyId();
-                    Log.e("ttt", "BASEAPISERVICE policyId> " + policyId);
                     if (apiUrl == null || apiUrl.isEmpty() || sn == null || sn.isEmpty()) {
                         callback.onFailed(new RemoteException(ERR_MSG_NULL_RETURNED));
                         return;
                     }
 
-                    Log.d(TAG, String.format("apiUrl: %s, sn: %s, marketId: %s, policyId: %s", apiUrl, sn, marketId, policyId));
-
-                    callback.onSuccess(apiUrl, sn, marketId, policyId);
+                    callback.onSuccess(apiUrl, sn, marketId);
                 } catch (RemoteException e) {
                     callback.onFailed(e);
                 }
@@ -85,7 +81,7 @@ public final class BaseApiService {
     }
 
     public interface InitCallback {
-        void onSuccess(String apiUrl, String sn, long marketId, String policyId);
+        void onSuccess(String apiUrl, String sn, long marketId);
         void onFailed(Throwable e);
     }
 }

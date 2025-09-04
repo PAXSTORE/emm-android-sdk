@@ -16,7 +16,16 @@ public class PolicyParamObject extends SdkObject {
     private String sha256;
     @SerializedName("signature")
     private String signature;
+    @SerializedName("variableSha256")
+    private String variableSha256;
 
+    public String getVariableSha256() {
+        return variableSha256;
+    }
+
+    public void setVariableSha256(String variableSha256) {
+        this.variableSha256 = variableSha256;
+    }
 
     public String getDownloadUrl() {
         return downloadUrl;
@@ -88,6 +97,7 @@ public class PolicyParamObject extends SdkObject {
                 ", cookieDto=" + cookieDto +
                 ", sha256='" + sha256 + '\'' +
                 ", signature='" + signature + '\'' +
+                ", variableSha256='" + variableSha256 + '\'' +
                 '}';
     }
 }

@@ -28,6 +28,8 @@ public class CommonConstants {
     public static final String ACTION_START_CUSTOMER_SERVICE = "com.sdk.service.ACTION_TO_DOWNLOAD_PARAMS";
 
     public static final String SP_PARAM_SHA256 = "sp_param_sha256";
+    public static final String SP_VARIABLE_SHA256 = "sp_variable_sha256";
+
     public static final String SP_PARAM_FOLDER = "sp_param_folder";
 
 

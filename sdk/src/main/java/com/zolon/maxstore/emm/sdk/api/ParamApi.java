@@ -107,6 +107,7 @@ public class ParamApi extends BaseApi {
     private static final String REQ_PARAM_PACKAGE_NAME = "packageName";
     private static final String REQ_PARAM_VERSION_CODE = "versionCode";
     private static final String REQ_PARAM_SHA256 = "X-Param-Sha256";
+    private static final String REQ_VARIABLE_SHA256 = "X-Variable-Sha256";
 
 
     private static final String REQ_PARAM_STATUS = "status";
@@ -133,7 +134,6 @@ public class ParamApi extends BaseApi {
      */
     protected static String downloadParamUrl = "/v1/3rdApps/emm/param";
 
-    protected static String url_policyid_path = "policyId";
     /**
      * The constant updateStatusUrl.
      */
@@ -155,13 +155,11 @@ public class ParamApi extends BaseApi {
     private long lastGetTime = -1;
     private Context context;
     private long marketId;
-    private String policyId;
 
-    public ParamApi(Context context, String baseUrl, String appKey, String appSecret, String terminalSN, long marketId, String policyId) {
+    public ParamApi(Context context, String baseUrl, String appKey, String appSecret, String terminalSN, long marketId) {
         super(baseUrl, appKey, appSecret, terminalSN);
         this.context = context;
         this.marketId = marketId;
-        this.policyId = policyId;
     }
 
     public String calculateSHA256(String filePath) {
@@ -187,15 +185,18 @@ public class ParamApi extends BaseApi {
      * @param packageName the packageName
      * @return the paramList
      */
-    public PolicyParamObject getParamDownloadTask(String packageName, String paramSha256, String policyId) {
+    public PolicyParamObject getParamDownloadTask(String packageName, String paramSha256, String variableSha256) {
         SdkRequest request = new SdkRequest(downloadParamUrl);
         request.addHeader(CommonConstants.REQ_PARAM_SN, getTerminalSN());
         request.addHeader(CommonConstants.REQ_PARAM_MARKET_ID, Long.toString(marketId));
-        request.addRequestParam(url_policyid_path, policyId);
         request.addRequestParam(REQ_PARAM_PACKAGE_NAME, packageName);
         if (paramSha256 != null) {
             request.addHeader(REQ_PARAM_SHA256, paramSha256);
         }
+        if (variableSha256 != null) {
+            request.addHeader(REQ_VARIABLE_SHA256, variableSha256);
+        }
+
         return JsonUtils.fromJson(call(request), PolicyParamObject.class);
     }
 
@@ -406,7 +407,11 @@ public class ParamApi extends BaseApi {
 
         String lastSaveFolder = PreferencesUtils.getString(context, CommonConstants.SP_PARAM_FOLDER);
         String paramSha256 =  Objects.equals(saveFilePath, lastSaveFolder)? PreferencesUtils.getString(context, CommonConstants.SP_PARAM_SHA256) : null;
+        String variableSha256 =  Objects.equals(saveFilePath, lastSaveFolder)? PreferencesUtils.getString(context, CommonConstants.SP_VARIABLE_SHA256) : null;
+
+
         if (!useCache) {
+            variableSha256 = null;
             paramSha256 = null;
         }
 
@@ -418,32 +423,15 @@ public class ParamApi extends BaseApi {
             return result;
         }
         //get paramList
-        Log.e("ttt", "policyId> " + policyId);
-        PolicyParamObject policyParamObject = getParamDownloadTask(packageName, paramSha256, policyId);
-        Log.e("ttt", "getSha256> " + policyParamObject.getSha256());
-        if (policyParamObject.getBusinessCode() != 0) {
-            SdkObject sdkObject = new SdkObject();
-            sdkObject.setBusinessCode(policyParamObject.getBusinessCode());
-            sdkObject.setMessage(policyParamObject.getMessage());
-            return sdkObject;
+        PolicyParamObject policyParamObject = getParamDownloadTask(packageName, paramSha256, variableSha256);
+        if (policyParamObject.getBusinessCode() != 0 || policyParamObject.getDownloadUrl() == null) { // code=0, 但是没有URL， 可能是参数和变量都没改， 也可能是关闭了参数
+            result.setBusinessCode(policyParamObject.getBusinessCode());
+            result.setMessage(policyParamObject.getMessage());
+            return result;
         }
-        if(paramSha256 != null && Objects.equals(paramSha256, policyParamObject.getSha256())) {
-            SdkObject sdkObject = new SdkObject();
-            sdkObject.setBusinessCode(policyParamObject.getBusinessCode());
-            sdkObject.setMessage(FILE_NO_UPDATE);
-            return sdkObject;
-        }
-        if (policyParamObject.getSha256() == null ) {
-            SdkObject sdkObject = new SdkObject();
-            sdkObject.setBusinessCode(-10);
-            sdkObject.setMessage(FILE_NO_PARAMETERS);
-            return sdkObject;
-        }
-
 
         saveFilePath = saveFilePath + File.separator + "temp"; // use first actionId as temp folder name
         String remarks = null;
-
 
         SdkObject sdkObject = downloadParamFileOnly(policyParamObject, saveFilePath);
         if (sdkObject.getBusinessCode() != ResultCode.SUCCESS.getCode()) {
@@ -454,12 +442,11 @@ public class ParamApi extends BaseApi {
         }
 
         if (remarks != null) {
-            Log.e("ttt", "remarks != null NO SHA256");
             // Since download failed, result of updating action is not concerned, just return the result of download failed reason
             FileUtils.delFolder(saveFilePath);
         } else {
-            Log.e("ttt", "SAVE SHA256");
             PreferencesUtils.putString(context, CommonConstants.SP_PARAM_SHA256, policyParamObject.getSha256());
+            PreferencesUtils.putString(context, CommonConstants.SP_VARIABLE_SHA256, policyParamObject.getVariableSha256());
             PreferencesUtils.putString(context, CommonConstants.SP_PARAM_FOLDER, saveFilePath.substring(0, saveFilePath.lastIndexOf("/temp")));
             // 当下载成功之后， 就把文件解压到上级目录
             FileUtils.moveToFatherFolder(saveFilePath);
