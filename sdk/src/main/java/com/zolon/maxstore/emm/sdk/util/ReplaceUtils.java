@@ -382,6 +382,11 @@ public class ReplaceUtils {
                     if (currentValue.equals(placeholder)) {
                         // 直接替换整个字符串值
                         jsonObject.addProperty(jsonEntry.getKey(), value);
+                    } else if (currentValue.contains(placeholder)) {
+                        // combo type variables
+                        placeholder = escapeExprSpecialWord(placeholder);
+                        currentValue = currentValue.replaceAll(String.format("(?i)%s", placeholder), Matcher.quoteReplacement(value));
+                        jsonObject.addProperty(jsonEntry.getKey(), currentValue);
                     }
                 }
             }
