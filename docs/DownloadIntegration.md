@@ -52,6 +52,7 @@ This interface bypasses the SHA256 comparison process entirely and always downlo
 **Use Case:** Critical situations requiring immediate parameter synchronization, such as after security incidents or user-initiated refresh operations.
 
 
+### 4：Download Parameters return codes and messages
 | Code | Message                  | Description        |
 |------|--------------------------| ------------------ |
 | 0    | Parameters downloaded    | New parameters successfully downloaded       |
