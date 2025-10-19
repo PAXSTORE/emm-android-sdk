@@ -32,5 +32,12 @@ android {
 
 dependencies {
     implementation 'com.google.code.gson:gson:2.9.0'
-    api 'com.whatspos.sdk:emm-java-sdk:1.0.0'
+    api 'com.whatspos.sdk:emm-java-sdk:3.2.0'
+    implementation 'org.slf4j:slf4j-android:1.7.25'
+
+}
+
+// make sure to clean before any publish to avoid duplicate files
+tasks.named('publish') {
+    dependsOn 'clean'
 }

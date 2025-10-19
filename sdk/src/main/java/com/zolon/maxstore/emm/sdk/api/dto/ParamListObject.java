@@ -26,4 +26,13 @@ public class ParamListObject extends SdkObject {
     public void setList(List<ParamObject> list) {
         this.list = list;
     }
+
+    @Override
+    public String toString() {
+        return "ParamListObject{" +
+                super.toString()  + '\'' +
+                "changed=" + changed +
+                ", list=" + list +
+                '}';
+    }
 }
