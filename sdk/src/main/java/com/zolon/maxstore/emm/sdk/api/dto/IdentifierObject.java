@@ -24,4 +24,14 @@ public class IdentifierObject extends SdkObject {
     public void setImei(String imei) {
         this.imei = imei;
     }
+
+
+    @Override
+    public String toString() {
+        return "IdentifierObject{" +
+                super.toString()  + '\'' +
+                "serialNo='" + serialNo + '\'' +
+                ", imei='" + imei + '\'' +
+                '}';
+    }
 }

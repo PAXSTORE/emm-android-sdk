@@ -6,6 +6,7 @@ import static com.zolon.maxstore.emm.sdk.java.base.util.SHA256Utils.encryptHMAC;
 import android.content.Context;
 import android.util.Log;
 
+import com.zolon.maxstore.emm.sdk.CommonConstants;
 import com.zolon.maxstore.emm.sdk.api.dto.IdentifierObject;
 import com.zolon.maxstore.emm.sdk.api.dto.ParamListObject;
 import com.zolon.maxstore.emm.sdk.api.dto.ParamObject;
@@ -25,8 +26,7 @@ public final class ParamVariableApi extends BaseApi {
     private static final String DOWNLOAD_PARAM_URL = "/v1/3rdApps/emm/variables";
     private static final String DOWNLOAD_SN_URL = "/v1/3rdApps/emm/identifier";
 
-    private static final String REQ_PARAM_MARKET_ID = "X-Device-Market";
-    private static final String REQ_PARAM_SN = "X-Device-SN";
+
     private static final String REQ_PARAM_VARIABLE_SIGN = "variablesignature";
 
     private static final String SP_KEY_VARIABLE_SIGN = "variable_sign";
@@ -43,8 +43,8 @@ public final class ParamVariableApi extends BaseApi {
 
     public ParamListObject getParamVariables() {
         SdkRequest request = new SdkRequest(DOWNLOAD_PARAM_URL);
-        request.addHeader(REQ_PARAM_SN, getTerminalSN());
-        request.addHeader(REQ_PARAM_MARKET_ID, Long.toString(marketId));
+        request.addHeader(CommonConstants.REQ_PARAM_SN, getTerminalSN());
+        request.addHeader(CommonConstants.REQ_PARAM_MARKET_ID, Long.toString(marketId));
 
         String variableSign = PreferencesUtils.getString(context, SP_KEY_VARIABLE_SIGN, SP_DEF_VARIABLE_SIGN);
         Log.d(TAG, "variableSign: " + variableSign);
@@ -58,8 +58,8 @@ public final class ParamVariableApi extends BaseApi {
 
     public IdentifierObject getIdentifier() {
         SdkRequest request = new SdkRequest(DOWNLOAD_SN_URL);
-        request.addHeader(REQ_PARAM_SN, getTerminalSN());
-        request.addHeader(REQ_PARAM_MARKET_ID, Long.toString(marketId));
+        request.addHeader(CommonConstants.REQ_PARAM_SN, getTerminalSN());
+        request.addHeader(CommonConstants.REQ_PARAM_MARKET_ID, Long.toString(marketId));
         return JsonUtils.fromJson(call(request), IdentifierObject.class);
     }
 
