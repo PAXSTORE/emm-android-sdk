@@ -360,7 +360,7 @@ public class ReplaceUtils {
         return resultMap;
     }
 
-    // 一个更简单但功能明确的版本，假设占位符只在顶级字符串值中
+
     public static String simpleReplaceSafe(Gson gson, String jsonString, List<ParamsVariableObject> paramList) {
         JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class).getAsJsonObject();
 
@@ -375,12 +375,12 @@ public class ReplaceUtils {
             String value = paramsVariableObject.getValue();
 
             logger.warn("key: " + paramsVariableObject.getKey() + "> value:" + paramsVariableObject.getValue());
-            // 遍历JSON对象的所有属性
+            // iterate all json objects
             for (Map.Entry<String, JsonElement> jsonEntry : jsonObject.entrySet()) {
                 if (jsonEntry.getValue().isJsonPrimitive() && jsonEntry.getValue().getAsJsonPrimitive().isString()) {
                     String currentValue = jsonEntry.getValue().getAsString();
                     if (currentValue.equals(placeholder)) {
-                        // 直接替换整个字符串值
+                        // replace whole value
                         jsonObject.addProperty(jsonEntry.getKey(), value);
                     } else if (currentValue.contains(placeholder)) {
                         // combo type variables

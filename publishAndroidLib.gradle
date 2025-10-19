@@ -22,7 +22,7 @@ if (secretPropsFile.exists()) {
 }
 
 
-def PUBLISH_GROUP_ID = 'com.whatspos.sdk' //这里可以不是直接申请时候的groupId只要开头是就可以
+def PUBLISH_GROUP_ID = 'com.whatspos.sdk'
 
 def PUBLISH_ARTIFACT_ID = "emm-android-sdk"
 
@@ -55,10 +55,10 @@ publishing {
                 url ='https://github.com/PAXSTORE/emm-android-sdk'
 
                 scm {
-                    //修改成你的Git地址：
+
                     connection = 'scm:git:github.com/PAXSTORE/emm-android-sdk.git'
                     developerConnection = 'scm:git:ssh://github.com/PAXSTORE/emm-android-sdk.git'
-                    //分支地址：
+
                     url = 'https://github.com/PAXSTORE/emm-android-sdk/tree/master'
                 }
 
@@ -69,7 +69,7 @@ publishing {
                     }
                 }
 
-                developers { // 改成你自己的信息
+                developers {
                     developer {
                         name = developerName
                         email ='paxstore-support@paxsz.com'

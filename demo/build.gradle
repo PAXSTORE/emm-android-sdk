@@ -5,7 +5,7 @@ plugins {
 
 android {
     buildFeatures {
-        buildConfig = true  // 显式启用 BuildConfig 生成
+        buildConfig = true
     }
     namespace 'com.zolon.maxstore.emm.demo'
     compileSdk 34
@@ -21,16 +21,16 @@ android {
         buildToolsVersion ANDROID_BUILD_TOOLS_VERSION
 
         manifestPlaceholders = [
-                ACCESS_KEY: "$ACCESS_KEY", // 替换为实际密钥
+                ACCESS_KEY: "$ACCESS_KEY",
                 SECRET: "$SECRET"
         ]
 
     }
 
-    // 1. 定义签名配置
+
     signingConfigs {
         release {
-            // 这些值将从 gradle.properties 中读取
+            // get from gradle.properties
             storeFile file(project.properties['KEYSTORE_FILE'] ?: "debug.keystore")
             storePassword project.properties['KEYSTORE_PASSWORD'] ?: ""
             keyAlias project.properties['KEY_ALIAS'] ?: ""
@@ -49,7 +49,7 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            // 2. 应用签名配置
+
             signingConfig signingConfigs.release
             buildConfigField "String", "SECRET", "\"$SECRET\""
             resValue "string", "ACCESS_KEY", "$ACCESS_KEY"
