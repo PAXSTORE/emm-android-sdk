@@ -84,7 +84,7 @@ android {
 dependencies {
 //    implementation project(':sdk')
 
-    implementation 'com.whatspos.sdk:emm-android-sdk:3.2.062401-SNAPSHOT'
+    implementation 'com.whatspos.sdk:emm-android-sdk:3.2.1'
 
     implementation 'androidx.core:core-ktx:1.6.0'
     implementation 'androidx.appcompat:appcompat:1.3.0'
