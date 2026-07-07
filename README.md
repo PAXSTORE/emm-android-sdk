@@ -124,8 +124,8 @@ ErrorCode
 
 See the [Apache 2.0 license](https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk/blob/master/LICENSE) file for details.
 
-    Copyright 2025 PAX Computer Technology(Shenzhen) CO., LTD ("PAX")
-    
+    Copyright © 2025 PAX Computer Technology(Shenzhen) CO., LTD ("PAX"). All Rights Reserved.
+
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at following link.
